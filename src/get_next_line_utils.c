@@ -6,54 +6,83 @@
 /*   By: mtritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 14:12:26 by mtritsch          #+#    #+#             */
-/*   Updated: 2022/06/14 19:21:44 by mtritsch         ###   ########.fr       */
+/*   Updated: 2022/06/15 19:18:43 by mtritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/get_next_line.h"
 
-t_file	*cust_open(int fd)
+int     new_line(t_marie *stored_chars)
 {
-	t_file	*pt_file;
-	t_file	empty;
+        int             x;
+        t_marie *pos;
 
-	pt_file = malloc(sizeof *pt_file);
-	if (pt_file != NULL)
-	{
-		
-		pt_file = &empty;
-		pt_file->fd = fd;
-	}
-	return (pt_file);
+        if (stored_chars == NULL)
+                return (0);
+        pos = go_last(stored_chars);
+        x = 0;
+        while (pos->content[x++])
+        {
+                if (pos->content[x] == '\n')
+                        return (1);
+        }
+        return (0);
+}
+t_marie *go_last(t_marie *stored_chars)
+{
+        t_marie *pos;
+
+        pos = stored_chars;
+        while (pos && pos->next)
+                pos = pos->next;
+        return (pos);
 }
 
-int	cust_getc(t_file *pt_file)
+void    create_line(char **line, t_marie *stored_chars)
 {
-	int	read_ok;
-	char	res;
-	
-	if (pt_file->reading_flow >= pt_file->reading_size)
-	{
-		pt_file->reading_size = 0;
-		pt_file->reading_flow = 0;
-		read_ok = read(pt_file->fd, pt_file->reading_buff, BUFFER_SIZE);
-		if (read_ok <= 0)
-			return (-1);
-		pt_file->reading_size = read_ok;
-	}
-	res = pt_file->reading_buff[pt_file->reading_flow];
-	pt_file->reading_flow++;
-	return (res);
-}
-/*
-char	append_c()
-{
-	;
+        int     x;
+        int     size;
+
+        size = 0;
+        while (stored_chars)
+        {
+                x = 0;
+                while (stored_chars->content[x])
+                {
+                        if (stored_chars->content[x] == '\n')
+                        {
+                                size++;
+                                break;
+                        }
+                        size++;
+                        x++;
+                }
+                stored_chars = stored_chars->next;
+        }
+        *line = malloc(sizeof(char) * (size + 1));
 }
 
-char	*final_line()
+int     get_len(char *s)
 {
-	;
-}*/
+        int     x;
 
+        while (s)
+                x++;
+        return (x);
+}
+
+void    free_store(t_marie *stored_chars)
+{
+        t_marie *pos;
+        t_marie *next;
+
+        pos = stored_chars;
+        while (pos)
+        {
+                free(pos->content);
+                next = pos->next;
+                free(pos);
+                pos = next;
+        }
+}
 
