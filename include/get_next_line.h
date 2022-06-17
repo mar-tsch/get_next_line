@@ -6,7 +6,7 @@
 /*   By: mtritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 15:38:16 by mtritsch          #+#    #+#             */
-/*   Updated: 2022/06/17 12:02:04 by mtritsch         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:05:06 by mtritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,21 @@
 #  define BUFFER_SIZE 10
 # endif
 
-char    *get_next_line(int fd);
+char	*get_next_line(int fd);
 
 typedef struct s_marie
 {
-        void            *content;
-        struct s_marie  *next;
-}       t_marie;
+	char			*content;
+	struct s_marie	*next;
+}	t_marie;
 
-void    read_store(t_marie **stored_chars, int p_read_ok);
-void    store_the_char(t_marie **stored_chars, char *buff, int *read_ok);
-void    put_line(t_marie *stored_chars, char **line);
-void    clean_store(t_marie *stored_chars);
-int             new_line(t_marie *stored_chars);
-int             get_len(char *s);
-t_marie *go_last(t_marie *stored_chars);
-void    create_line(char **line, t_marie *stored_chars);
-void    free_store(t_marie *stored_chars);
+void	read_store(int fd, t_marie **stored_chars);
+void	store_the_char(t_marie **stored_chars, char *buff, int read_ok);
+void	put_line(t_marie *stored_chars, char **line);
+void	clean_store(t_marie **stored_chars);
+int		new_line(t_marie *stored_chars);
+int		get_len(char *s);
+t_marie	*go_last(t_marie *stored_chars);
+void	create_line(char **line, t_marie *stored_chars);
+void	free_store(t_marie *stored_chars);
 #endif
-
