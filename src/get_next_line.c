@@ -6,7 +6,7 @@
 /*   By: mtritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 14:10:39 by mtritsch          #+#    #+#             */
-/*   Updated: 2022/06/15 19:22:48 by mtritsch         ###   ########.fr       */
+/*   Updated: 2022/06/17 12:13:59 by mtritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,24 @@
 
 char    *get_next_line(int fd)
 {
-        int                     read_ok;
         static t_marie  *stored_chars;
-        char            *line;
+        int                             read_ok;
+        char                    *line;
 
         if (fd < 0 || BUFFER_SIZE < 0 || read(fd, &line, 0) < 0)
                 return (NULL);
         read_ok = 1;
         line = NULL;
-        read_store(stored_chars, read_ok);
-        if (stored_char == NULL)
+        stored_chars = NULL;
+        read_store(&stored_chars, &read_ok);
+        if (stored_chars == NULL)
                 return (NULL);
         put_line(stored_chars, &line);
         clean_store(&stored_chars);
         return (line);
 }
 
-void    read_store(t_marie **stored_chars, int p_read_ok)
+void    read_store(t_marie **stored_chars, int *p_read_ok)
 {
         char    *buff;
 
