@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtritsch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 14:10:39 by mtritsch          #+#    #+#             */
-/*   Updated: 2022/06/21 14:58:36 by mtritsch         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:27:51 by mtritsch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static t_marie	*stored_chars;
+	static t_marie	*stored_chars[1024];
 	char			*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
 		return (NULL);
 	line = NULL;
-	read_store(fd, &stored_chars);
-	if (!stored_chars)
+	read_store(fd, &stored_chars[fd]);
+	if (!stored_chars[fd])
 		return (NULL);
-	put_line(stored_chars, &line);
-	clean_store(&stored_chars);
+	put_line(stored_chars[fd], &line);
+	clean_store(&stored_chars[fd]);
 	if (*line == '\0')
 	{
-		free_store(stored_chars);
-		stored_chars = NULL;
+		free_store(stored_chars[fd]);
+		stored_chars[fd] = NULL;
 		free(line);
 		return (NULL);
 	}
